@@ -23,12 +23,12 @@ runs:
         dotnet-version: '6.0.x' # replace with desired version
 
     - name: Restore dependencies
-      run: dotnet restore ${{ input.project_path }}
+      run: dotnet restore ${{ inputs.project_path }}
 
     - name: Build and pack project
-      run: dotnet pack -c Release --include-symbols -p:PackageVersion=${{ input.package_version }} -p:PackageId=${{ input.package_name }} -o bin/Release --include-source ${{ input.project_path }}
+      run: dotnet pack -c Release --include-symbols -p:PackageVersion=${{ inputs.package_version }} -p:PackageId=${{ inputs.package_name }} -o bin/Release --include-source ${{ inputs.project_path }}
 
     - name: Publish package to NuGet
-      run: dotnet nuget push bin/Release/*.nupkg --api-key ${{ input.nuget_api_key }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push bin/Release/*.nupkg --api-key ${{ inputs.nuget_api_key }} --source https://api.nuget.org/v3/index.json
       env:
-        NUGET_API_KEY: ${{ input.nuget_api_key }}
+        NUGET_API_KEY: ${{ inputs.nuget_api_key }}
