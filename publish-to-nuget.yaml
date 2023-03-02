@@ -1,0 +1,34 @@
+name:  Publish to Nuget
+description: Build , Publish, Pack and Push  a project to nuget 
+inputs:
+  project_path:
+    description: relative project path
+    required: true
+  package_name:
+    description: package name in nuget
+    required: true
+  package_version:
+    description: package version display in nuget
+    required: true
+  nuget_api_key:
+    description: nuget api key
+    required: true
+
+runs:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # replace with desired version
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ input.project_path }}
+
+    - name: Build and pack project
+      run: dotnet pack -c Release --include-symbols -p:PackageVersion=${{ input.package_.version }} -p:PackageId=${{ input.package_name }} -o bin/Release --include-source ${{ input.project_path }}
+
+    - name: Publish package to NuGet
+      run: dotnet nuget push bin/Release/*.nupkg --api-key ${{ input.nuget_api_key }} --source https://api.nuget.org/v3/index.json
+      env:
+        NUGET_API_KEY: ${{ input.nuget_api_key }}
