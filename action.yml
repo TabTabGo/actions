@@ -26,7 +26,7 @@ runs:
       run: dotnet restore ${{ inputs.project_path }}
 
     - name: Build and pack project
-      run: dotnet pack -c Release --include-symbols -p:PackageVersion=${{ inputs.package_version }} -p:PackageId=${{ inputs.package_name }} -o bin/Release --include-source ${{ inputs.project_path }}
+      run: dotnet pack -c Release --include-symbols -p:PackageVersion=${{ inputs.package_version }}  -o bin/Release --include-source ${{ inputs.project_path }}
 
     - name: Publish package to NuGet
       run: dotnet nuget push bin/Release/${{ inputs.package_name }}.${{ inputs.package_version }}.nupkg --api-key ${{ inputs.nuget_api_key }} --source https://api.nuget.org/v3/index.json
