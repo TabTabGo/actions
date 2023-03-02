@@ -15,7 +15,7 @@ inputs:
     required: true
 
 runs:
-  runs-on: ubuntu-latest
+  using: "composite"
   steps:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
