@@ -24,11 +24,14 @@ runs:
 
     - name: Restore dependencies
       run: dotnet restore ${{ inputs.project_path }}
+      shell: bash
 
     - name: Build and pack project
       run: dotnet pack -c Release --include-symbols -p:PackageVersion=${{ inputs.package_version }}  -o bin/Release --include-source ${{ inputs.project_path }}
+      shell: bash
 
     - name: Publish package to NuGet
       run: dotnet nuget push bin/Release/${{ inputs.package_name }}.${{ inputs.package_version }}.nupkg --api-key ${{ inputs.nuget_api_key }} --source https://api.nuget.org/v3/index.json
+      shell: bash
       env:
         NUGET_API_KEY: ${{ inputs.nuget_api_key }}
